@@ -1,0 +1,18 @@
+{"text": "когда приедет моя посылка?", "channel": "chat", "expected_category": "order_status"}
+{"text": "заказ #4521 до сих пор не доставлен, где он?", "channel": "web", "expected_category": "order_status"}
+{"text": "не вижу трек-номер, статус заказа неясен", "channel": "app", "expected_category": "order_status"}
+{"text": "не приходит смс код для входа в приложение", "channel": "app", "expected_category": "account_access"}
+{"text": "забыл пароль от личного кабинета, как восстановить?", "channel": "email", "expected_category": "account_access"}
+{"text": "мой аккаунт заблокирован без объяснения причин", "channel": "chat", "expected_category": "account_access"}
+{"text": "спишите деньги обратно, хочу возврат за подписку", "channel": "email", "expected_category": "billing_refund"}
+{"text": "оплата прошла дважды, верните лишнюю сумму", "channel": "web", "expected_category": "billing_refund"}
+{"text": "хочу вернуть деньги за товар, он бракованный", "channel": "chat", "expected_category": "billing_refund"}
+{"text": "приложение постоянно вылетает при открытии корзины", "channel": "app", "expected_category": "technical_bug"}
+{"text": "сайт не загружается уже второй день", "channel": "web", "expected_category": "technical_bug"}
+{"text": "кнопка оплаты не реагирует на нажатие", "channel": "app", "expected_category": "technical_bug"}
+{"text": "ваш оператор нахамил мне в чате, это недопустимо", "channel": "chat", "expected_category": "abuse_or_complaint"}
+{"text": "хочу подать жалобу на качество обслуживания", "channel": "email", "expected_category": "abuse_or_complaint"}
+{"text": "это возмутительно, никто не отвечает уже неделю", "channel": "email", "expected_category": "abuse_or_complaint"}
+{"text": "подскажите, как работает программа лояльности", "channel": "web", "expected_category": "other"}
+{"text": "у меня есть вопрос по условиям доставки", "channel": "chat", "expected_category": "other"}
+{"text": "как связаться с поддержкой по email напрямую", "channel": "email", "expected_category": "other"}
