@@ -27,11 +27,25 @@ curl -X POST localhost:8000/tickets -H "Content-Type: application/json" \
   -d '{"ticket_id":"t1","customer_id":"c1","channel":"chat","text":"когда приедет мой заказ?"}'
 ```
 
+## Запуск с реальной LLM (опционально)
+
+По умолчанию генерация ответа — детерминированный `MockLLM`, без внешних зависимостей: так работают тесты и обычный запуск. При желании можно подключить настоящую открытую модель через [Ollama](https://ollama.com):
+
+```bash
+ollama pull qwen2.5:0.5b       # или любая другая маленькая модель
+ollama serve                    # если ещё не запущен как сервис
+
+export LLM_PROVIDER=ollama      # Windows: $env:LLM_PROVIDER="ollama"
+uvicorn app.main:app --reload
+```
+
+Тесты и `LLM_PROVIDER` не заданный (по умолчанию) — всегда используют мок, реальная модель не требуется для проверки решения. Код — `app/llm_client.py` (`OllamaLLM`, фабрика `get_llm_client`).
+
 ## Что реально реализовано, а что — дизайн
 
-**Реализовано (PoC):** FastAPI-эндпоинт, PII/prompt-injection эвристики, baseline-классификатор (TF-IDF + cosine similarity к few-shot примерам), retrieval по мини-базе FAQ (та же TF-IDF-механика), мок LLM с имитацией сбоя и деградацией, роутинг auto-reply/escalation, идемпотентность по `ticket_id`, in-memory audit log, smoke-тесты.
+**Реализовано (PoC):** FastAPI-эндпоинт, PII/prompt-injection эвристики, baseline-классификатор (TF-IDF + cosine similarity к few-shot примерам), retrieval по мини-базе FAQ (та же TF-IDF-механика), LLM-клиент с имитацией сбоя и деградацией (по умолчанию мок; опционально — реальная открытая модель через Ollama, см. выше), роутинг auto-reply/escalation, идемпотентность по `ticket_id`, in-memory audit log, smoke-тесты.
 
-**Дизайн, не реализовано (описано в `docs/architecture.md`):** очередь для амортизации всплесков нагрузки (10–20k тикетов/10 мин при инцидентах), горизонтальное масштабирование воркеров, persistent-хранилище и отдельный append-only audit log, managed vector DB и embeddings вместо TF-IDF, реальный LLM-провайдер вместо мока, дедупликация/кластеризация тикетов во время инцидентов, полноценный мониторинг и алертинг.
+**Дизайн, не реализовано (описано в `docs/architecture.md`):** очередь для амортизации всплесков нагрузки (10–20k тикетов/10 мин при инцидентах), горизонтальное масштабирование воркеров, persistent-хранилище и отдельный append-only audit log, managed vector DB и embeddings вместо TF-IDF, дедупликация/кластеризация тикетов во время инцидентов, полноценный мониторинг и алертинг.
 
 ## Допущения
 - Тикет: `ticket_id`, `customer_id`, `channel` (chat/email/web/app), `text`.

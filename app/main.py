@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 
-from .llm_client import MockLLM
+from .llm_client import get_llm_client
 from .models import Ticket, TicketResult
 from .router import handle_ticket
 from .storage import escalation_queue, tickets_db
@@ -17,7 +17,9 @@ def health():
 def create_ticket(ticket: Ticket, simulate_llm_failure: bool = False):
     # simulate_llm_failure — только для демонстрации деградации (docs/architecture.md,
     # сценарий "LLM API недоступен"); в проде переключатель отсутствует.
-    llm = MockLLM(force_failure=simulate_llm_failure)
+    # get_llm_client() по умолчанию возвращает MockLLM (без внешних зависимостей);
+    # LLM_PROVIDER=ollama в окружении переключает на реальную локальную модель (см. README).
+    llm = get_llm_client(force_failure=simulate_llm_failure)
     return handle_ticket(ticket, llm=llm)
 
 
