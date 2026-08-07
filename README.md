@@ -46,7 +46,6 @@ curl -X POST localhost:8000/tickets -H "Content-Type: application/json" \
 ```
 README.md              — этот файл
 PLAN.md                 — полный план кейса (контекст, допущения, архитектура, порядок работы)
-IMPLEMENTATION.md        — пошаговая инструкция реализации с кодом
 docs/                     — architecture.md, ml.md, monitoring.md, risks-and-ops.md
 AI_USAGE.md                — честный лог использования AI
 SELF_REVIEW.md              — самооценка решения
