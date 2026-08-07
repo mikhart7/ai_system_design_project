@@ -16,7 +16,8 @@ class MockLLM(LLMClient):
     def generate(self, ticket_text: str, context: str) -> str:
         if self.force_failure:
             raise TimeoutError("LLM API unavailable (simulated)")
-        snippet = context.strip().splitlines()[0] if context else "см. базу знаний"
+        lines = [ln.strip("# ").strip() for ln in context.strip().splitlines() if ln.strip()]
+        snippet = lines[1] if len(lines) > 1 else (lines[0] if lines else "см. базу знаний")
         return f"Спасибо за обращение. {snippet}"
 
 
