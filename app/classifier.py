@@ -42,9 +42,10 @@ EXEMPLARS: dict[str, list[str]] = {
     ],
 }
 
-# Порог подобран на глаз на data/eval/sample_tickets.jsonl (см. docs/ml.md) — ниже него
-# считаем, что классификатор не уверен, и уходим в эскалацию, а не в автоответ.
-CONFIDENCE_THRESHOLD = 0.35
+# Порог подобран на data/eval/sample_tickets.jsonl (см. docs/ml.md): на этом наборе
+# 0.5 отделяет обе реальные ошибки классификации (conf 0.37-0.45) от всех верных
+# предсказаний (conf >= 0.58) — ниже него уходим в эскалацию, а не в автоответ.
+CONFIDENCE_THRESHOLD = 0.5
 
 _labels = [cat for cat, exs in EXEMPLARS.items() for _ in exs]
 _corpus = [ex for exs in EXEMPLARS.values() for ex in exs]
