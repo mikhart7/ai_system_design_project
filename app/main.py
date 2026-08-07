@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 
+from .llm_client import MockLLM
 from .models import Ticket, TicketResult
 from .router import handle_ticket
 from .storage import escalation_queue, tickets_db
@@ -13,8 +14,11 @@ def health():
 
 
 @app.post("/tickets", response_model=TicketResult)
-def create_ticket(ticket: Ticket):
-    return handle_ticket(ticket)
+def create_ticket(ticket: Ticket, simulate_llm_failure: bool = False):
+    # simulate_llm_failure — только для демонстрации деградации (docs/architecture.md,
+    # сценарий "LLM API недоступен"); в проде переключатель отсутствует.
+    llm = MockLLM(force_failure=simulate_llm_failure)
+    return handle_ticket(ticket, llm=llm)
 
 
 @app.get("/tickets/{ticket_id}", response_model=TicketResult)
